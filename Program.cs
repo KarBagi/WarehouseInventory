@@ -1,44 +1,41 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<WarehouseInventoryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WarehouseInventoryContext") ?? throw new InvalidOperationException("Connection string 'WarehouseInventoryContext' not found.")));
+
+// Dodaj usługi kontrolerów do kontenera
+builder.Services.AddControllers();
+
+// Dodaj usługę Swaggera do kontenera
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "My API",
+        Description = "Opis mojej API",
+    });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Konfiguracja Swaggera i interfejsu Swagger UI tylko w środowiskach deweloperskich
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+    });
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+// Dodaj mapowanie kontrolerów
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
