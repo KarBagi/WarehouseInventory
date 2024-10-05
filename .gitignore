@@ -1,5 +1,40 @@
+# Pliki i katalogi systemu operacyjnego
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# Katalogi generowane przez .NET
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+out/
+
+# Pliki konfiguracyjne dla środowiska
+appsettings*.json
+*.user
+*.suo
+*.sln.ide
+
+# Pliki dla narzędzi do zarządzania pakietami
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+
+# Pliki z folderu .vs
+.vs/
+
+# Pliki bazy danych
+*.mdf
+*.ldf
+
+# Pliki logów
+*.log
+
+# Pliki wygenerowane przez Docker
+docker-compose.override.yml
+
+# Katalogi tymczasowe
+tmp/
+temp/

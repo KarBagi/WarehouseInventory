@@ -26,6 +26,3 @@ networks:
     # actually this is the default
     driver: bridge
 # Address in DatGrip jdbc:sqlserver://localhost\databasename:1433
-# "Data Source=localhost,1433;Initial Catalog=db;User id=sa;Password=Pass123!;MultipleActiveResultSets=True"
-# dotnet ef dbcontext scaffold "Server=localhost,1433;Database=Warehouse_Inventory;User Id=sa;Password=Pass123!;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -o Models -c YourDbContextName -f
-# Server=localhost,1433;Database=Warehouse_Inventory;User Id=sa;Password=Pass123!;TrustServerCertificate=True;
